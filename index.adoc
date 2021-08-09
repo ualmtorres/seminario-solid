@@ -1,0 +1,517 @@
+////
+NO CAMBIAR!!
+Codificación, idioma, tabla de contenidos, tipo de documento
+////
+:encoding: utf-8
+:lang: es
+:toc: right
+:toc-title: Tabla de contenidos
+:doctype: book
+:imagesdir: ./images
+:linkattrs:
+
+////
+Nombre y título del trabajo
+////
+# Principios SOLID
+Servicio de las Tecnologías de la Información y las Comunicaciones - Universidad de Almería
+
+image::logocloudstic.png[]
+
+// NO CAMBIAR!! (Entrar en modo no numerado de apartados)
+:numbered!: 
+
+
+[abstract]
+== Resumen
+////
+COLOCA A CONTINUACION EL RESUMEN
+////
+
+
+////
+COLOCA A CONTINUACION LOS OBJETIVOS
+////
+.Objetivos
+* xxx
+
+[TIP]
+====
+Disponible el https://github.com/ualmtorres/tutorial-nest-js[repositorio] usado en este tutorial.
+====
+
+// Entrar en modo numerado de apartados
+:numbered:
+
+## Introducción
+
+En un buen diseño hay cosas que tenemos que hacer y cosas que tenemos que evitar. Básicamente debemos favorecer la reutilización de código y la extensibilidad.
+
+Por un lado, la reutilización ayuda a reducir los costes reduciendo la creación de código desde cero y promoviendo la reutilización de código en proyectos existentes. En este sentido el uso de patrones de diseño es una forma de aumentar la flexibilidad del software y hacerlos más fáciles de reutilizar. No obstante, hay que tener en cuenta que en ocasiones el precio a pagar puede que no merezca la pena. Pero en proyectos grandes y con vistas a ser ampliados con el paso del tiempo, se convierten en algo prácticamente imprescindible. El caso más básico de reutilización lo encontramos en la reutilización de librerías de clases. En un nivel bastante más alto nos encontramos a los frameworks en los que ya hay tomadas una serie de decisiones de diseño y de organización de archivos. En un nivel intermedio situamos a los patrones de diseño, que nos ayudarn a definir una organización de clases y la forma en la que interactúan para dar respuesta a un problema concreto.
+
+Por otro lado, la extensibilidad es una constante en el desarrollo de proyectos software. Está presente cuando nos piden abrir una línea de una aplicación móvil complementaria a la aplicación actual. Está presente cuando hay que hacer cambios a nivel de diseño de la interfaz de usuario. Está presente cuando hay un cambio en las reglas de negocio. Y está presente cuando hay que incluir nuevas funcionalidades.
+
+Aunque no hay respuestas sencillas a priori para establecer cuando un diseño es bueno, sí que hay una serie de principios universales que nos pueden ser de ayuda y que sirven de base para los patrones de diseño. Básicamente se trata de encapsular lo que varía, programar sobre una interfaz y no sobre una implementación, y favorecer el uso de la composición respecto de la herencia.
+
+## Principios de diseño universales
+
+### Encapsular lo que varía
+
+Se trata de identificar los aspectos que varían en una aplicación y separarlos de lo que permanece estable.
+
+[TIP]
+====
+El objetivo de encapsular lo que varía es reducir el impacto de los cambios. Cuanto menos tiempo se dedique a realizar un cambio, más tiempo se tiene para implementar nuevas funcionalidades.
+====
+
+#### Encapsulación a nivel de método
+
+Supongamos un método `getOrderTotal` para el cálculo del total de un pedido incluyendo impuestos. En una propuesta original el cálculo de impuestos puede estar mezclado con el resto del código
+
+[source,]
+----
+method getOrderTotal(order) is total = 0
+    foreach item in order.lineItems
+        total += item.price * item.quantity
+
+    if (order.country == "US")
+        total += total * 0.07 // US sales tax
+    else if (order.country == "EU"):
+        total += total * 0.20 // European VAT
+
+    return total
+----
+
+Una opción es llevar la lógica del cálculo de impuestos a un método aparte
+
+[source, ]
+----
+method getOrderTotal(order) is total = 0
+    foreach item in order.lineItems
+        total += item.price * item.quantity
+    
+    total += total * getTaxRate(order.country) <1>
+    
+    return total
+
+method getTaxRate(country) is <2>
+    if (country == "US")
+        return 0.07 // US sales tax 
+    else if (country == "EU")
+        return 0.20 // European VAT 
+    else
+        return 0
+----
+<1> Llamada al método que hace el cálculo de los impuestos
+<2> Método al que se ha extraído la lógica del cálculo de impuestos
+
+#### Encapsulación a nivel de clase
+
+Si la complejidad del método aumenta y empieza a dedicarse a más de una cosa, o bien necesitamos varios métodos auxiliares, debemos llevarlo todo a una nueva clase que hará que todo sea más limpio y sencillo. Aquí vemos una clase `Order` que se dedica a la gestión de los pedidos en sí y además calcula sus impuestos.
+
+image::PedidoAntesDeExtraerClase.png[]
+
+Si ahora sacamos el método del cálculo de clases a otra clase aparte, conseguimos aislar en otra clase lo que puede variar y se deja la clase `Order` para las operaciones relacionadas estrictamente con los pedidos (registro, consulta, ...).
+
+image::PedidoDespuesDeExtraerClase.png[]
+
+### Programar sobre una interfaz y no sobre una implementación
+
+Cuando queremos que dos clases colaboren se debe evitar que una dependa de la otra. Una forma más flexible hace lo siguiente:
+
+. Determinar qué es lo que necesita un objeto del otro.
+. Definir esos métodos en una nueva interfaz o en una nueva clase abstracta.
+. Crear una clase que implemente esa interfaz.
+. Hacer que la clase original dependa ahora de la interfaz y no de la clase concreta.
+
+Aquí vemos un ejemplo en el que se pasa de programar sobre una clase concreta (`Sausage`) a programar sobre una interface (`Food`).
+
+image::GatosExtraerInterface.png[]
+
+Otro ejemplo de diseño incorrecto programando sobre clases concretas y no sobre interfaces sería el siguiente:
+
+image::ProgramadoresAntesDeExtraerInterface.png[]
+
+Para desacoplar las clases generalizamos los métodos de las clases de los distintos tipos de empleados a un nuevo método en una interface `Employee`. Para usar las clases concretas haremos polimorfismo desde la clase `Company` sobre el método `doWork` de la interface `Employee`.
+
+image::ProgramadoresDespuesDeExtraerInterface.png[]
+
+Si más adelante tenemos diferentes tipos de empresas que necesiten obtener su lista de empleados de forma diferente (en función de sus tipos de empleado), en lugar de hacerlo con `if-else` favoreceremos la creación de subclases específicas y hacemos que el método de la clase sea `abstract` para que lo implemente cada subclase. Esto permitirá añadir nuevos tipos de empresas más adelante con sus métodos particulares de recuperación de empleados.
+
+image::CompañiasFacilmenteExtensibles.png[]
+
+### Favorecer el uso de la composición respecto de la herencia
+
+Pese a que la herencia es la forma más inmediata que utilizamos para reutilizar código entre clases, hay que usarla con cuidado si queremos tener un buen diseño que evite problemas en el futuro de nuestras aplicaciones.
+
+* Una subclase no puede reducir la interface de la superclase. Hay que implementar todos los métodos abstractos de la clase padre aunque no se vayan a usar en la subclase.
+* Los métodos sobrescritos tienen que ofrecer un comportamiento nuevo que sea compatible con de la superclase. Esto se debe a que puede que se pasen objetos de la subclase a métodos que esperen objetos de la superclase y no queremos que el código quede roto. Veremos más sobre esto en <<Principio de sustitución de Liskov>>
+
+La opción es pasar de una relación "es-un" a una relación "tiene-un".
+
+Un ejemplo lo podemos tener en una aplicación de transporte, que tiene vehículos que pueden ser coches o camiones. Los vehículos pueden ser eléctricos o de combustión. Los vehiculos pueden tener piloto automático o manual. 
+
+Con herencia esto daría lugar a la explosión siguiente, que podría aumentar aún más al añadir nuevas características.
+
+image::TransporteHerencia.png[]
+
+Con la composición no implementamos el comportamiento sino que lo **delegamos** a otras clases.
+
+image::TransporteComposicion.png[]
+
+Este nuevo enfoque es mucho más versátil y limpio.
+
+## Principios SOLID
+
+
+* Ayudan a programar mejor creando un código más fácil de mantener 
+* Ayudan a mejorar una propuesta de diseño de software
+* Ayudan a dar feedback a compañeros sobre la calidad de su software
+* Son principios o convenios bastante aceptados en la industria
+* Ayudan a hacer tests
+
+[NOTE]
+====
+* Deuda técnica: Hacer algo mal que va acompañándonos todo el proyecto.
+* Optimización prematura (crédito técnico): Complicar demasiado la arquitectura por su en un futuro se necesita cuando en realidad no hace falta.
+* Todos los desarrolladores de un equipo deberían tener nociones de diseño de software para fomentar la autonomía y agilidad del equipo
+====
+
+### STUPID
+
+* Singleton: Este objeto va dando vueltas por todo el programa (p.e. caché en memoria). El problema es que genera mucho acoplamiento y dificulta el testing.
+* Tight coupling: Conoces la implementación (p.e. MySQL, proveedor de mailing). Hay que ir cambiando en cada una de las clases que lo usen. Dificulta el mantenimiento.
+* Untestability: Al no inyectar las dependencias en el constructor sino acoplándonos a ellas usando métodos estáticos tenemos código no testeable. Al no inyectar dependencias vía constructor nos vemos obligados al uso de costuras en nuestro código.
+* Premature optimization: Trabajo innecesario anticipándonos en exceso que añade complejidad gratuita cuando en realidad no hace falta. Evitar crear superclases abstractas si no son necesarias.
+* Indescriptive naming
+* Duplication. Mejor generar abstracciones o extracciones buscando la responsabilidad única.
+
+## Principios de diseño
+
+## Principio de Responsabilidad Única
+
+* Concepto:
+    ** Una clase = Un concepto y responsabilidad
+    ** Una clase debería tener sólo 1 razón para cambiar
+* Cómo conseguirlo:
+    ** Clases de servicios pequeñas con objetivos acotados
++
+[NOTE]
+====
+Un servicio aquello que orquesta un conjunto de pasos interactuando con otros elementos del sistema y toca infraestructura (para enviar emails -construir, validar si es correcto).
+**Cada servicio sólo debe tener un método público**
+Mejor tener un EmailSender que no un EmailService que puede agupar funciones variadas.
+====
+* Finalidad:
+    ** Alta cohesión y robustez
+    ** Permitir composición de clases (inyectar colaboradores). Evitamos tener una clase con 5 métodos inyectando 5 clases a la clase original
+    ** Evitar duplicidad de código gracias a la reutilización de clases "pequeñas" (composición)
+    
+Evitamos servicios como OrderAnalyzer u OrderProcessor porque términos genéricos nos abocan a acabar con más de 1 responsabilidad
+Preferimos servivios como OrderTrustabilityChecker u OrderMarginCalculator porque son más específicos y no abren la puerta a añadir más funcionalidades.
+
+### Ejemplo sencillo
+
+#### Violación SRP en modelo de dominio
+
+[source, java]
+----
+Modelo de dominio Book:
+
+
+final class Book
+{
+    public String getTitle()
+    {
+        return "A great book";
+    }
+    public String getAuthor()
+    {
+        return "John Doe";
+    }
+    public void printCurrentPage()
+    { 
+        System.out.println("current page content");
+    }
+}
+----
+
+Servicio cliente del modelo de dominio:
+
+
+[source, java]
+----
+final class Client
+{
+    public Client() {
+        Book book = new Book(…);
+        book.printCurrentPage();
+    }
+}
+----
+
+[CAUTION]
+====
+Motivo del por qué no respetamos SRP: Book está acoplada al canal estándar de salida al imprimir la página actual. Sabe cómo modelar los datos y cómo imprimirlos.
+====
+    
+#### Refactor respetando SRP
+
+Clase Book:
+
+[source, java]
+----
+final class Book
+{
+    public String getTitle()
+    {
+        return "A great book";
+    }
+    public String getAuthor()
+    {
+        return "John Doe";
+    }
+    public String getCurrentPage()
+    {
+        return "current page content";
+    }
+}
+----
+
+Implementación de la impresora:
+
+[source, java]
+----
+final class StandardOutputPrinter
+{
+    public void printPage(String page)
+    {
+        System.out.println(page);
+    }
+}
+----
+
+Servicio cliente:
+[source,java]
+----
+final class Client
+{
+    public Client() {
+        Book book = new Book(…);
+        String currentPage = book.getCurrentPage();
+        StandardOutputPrinter printer = new StandardOutputPrinter();
+        printer.printPage(currentPage);
+    }
+}
+
+----
+
+#### Aplicando modularidad
+
+Esto lo veremos en detalle en la lección del Principio de Inversión de Dependencias (DIP) de este mismo curso:
+
+
+Interface Printer:
+[source,java]
+----
+interface Printer
+{
+    public void printPage(String page);
+}
+----
+
+Impresora por el canal estándar de salida:
+
+
+[source,java]
+----
+final class StandardOutputPrinter implements Printer
+{
+    public void printPage(String page)
+    {
+        System.out.println(page);
+    }
+}
+----
+
+Impresora por el canal estándar de salida pero en HTML:
+
+
+[source,java]
+----
+final class StandardOutputHtmlPrinter implements Printer
+{
+    public void printPage(String page)
+    {
+        System.out.println("<div>" + page + "</div>");
+    }
+}
+----
+
+### No usar getters y setters
+
+* Evitar modelos anémicos: clases de dominio sólo con variables de instancia y sin comportamiento, es decir, que parezcan un DTO.
+* No definir las variables de instancia como públicos para acceder directamente. Abre el modelo a problemas de integridad e inconsistencia en el modelo. Convertimos las variables de instancia en privadas y definimos getters y setters.
+* Creamos un constructor con sus variables de instancia.
+* La lógica de las entidades no debe estar fuera de ellas repartida por la aplicación (servicios usando getters y construyendo la lógica de negocio fuera). En su lugar, la lógica está en la entidad y le preguntas si se cumple la lógica o no. Un método como el de saber si es el cumpleaños de un usuario tiene que estar en el usuario, no fuera.
+    ** El comportamiento de IsHisBirthday() no debería estar en Mail.SendNotifications().
+    ** El comportamiento de IsPackable() basado en el volumen de un objeto no debería estar en una clase Sender, sino que debería ser de la clase Product.
+
+### Ejemplo VideoController
+
+Tenemos un controlador como punto de acceso a varias operaciones (endpoints) de la API
+
+[source, php]
+----
+<?php
+
+namespace AppBundle\Controller;
+
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * THE VIDEO CONTROLLER
+ * © CodelyTV 2017
+ */
+class VideoController extends BaseController
+{
+    /**
+     * Method used to create a new video
+     * @todo Validate the request
+     */
+    public function postVideoAction(Request $request) <1>
+    {
+        // Preparing the sql to create the video <2>
+        $sql  = "INSERT INTO video (title, url, course_id) 
+                VALUES (\"{$request->get('title')}\",
+                        \"{$request->get('url')}\",
+                        {$request->get('course_id')}
+                )";
+
+        // Prepare doctrine statement
+        $stmt = $this->getDoctrine()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        // IMPORTANT: Obtaining the video id. Take care, it's done without another query :)
+        $videoId = $stmt->lastInsertId(); <3>
+
+        // And we return the video created <4>
+        return [
+            'id'        => $videoId,
+            'title'     => $request->get('title'),
+            'url'       => $request->get('url'),
+            'course_id' => $request->get('course_id'),
+        ];
+    }
+}
+----
+<1> Tenenos una función por cada operación/endpoint de la API
+<2> Acoplamiento a BD. Problema al cambiar de BD, al añadir un nuevo campo hay que modificar en cada uno de los controladores/servicios
+<3> Depender de infraestructura para obtener el ID
+<4> En la creación estamos devolviendo datos
+
+.Indicios de violación del SRP
+****
+* Tener varios endpoints diferentes (con acciones POST, PUT, DELETE, ...), reunirlos en un solo controlador que luego derive cada endpoint a sus respectivos servicios es un indicio de violación del SRP. Esto va en contra de tener un controlador por tipo de recurso con todos sus verbos, pero separar el controlador por verbo genera simplicidad aunque aumenta el número de archivos.
+* Tener un método con un argumento en función del cual se haga una cosa u otra en un `switch` o `if` en lugar de tantos métodos como condiciones genere el parámetro pasado al argumento es un indicio de violación del SRP.
+****
+
+## Principio de Abierto/Cerrado
+
+* El software debe estar abierto a extensión y cerrado a modificación haciendo uso de interfaces o de clases abstractas. 
+* Finalidad
+    ** Facilitar la incorporación de nuevos casos de uso a la aplicación o acciones derivadas.
+* Cómo conseguirlo
+    ** Abstraemos a una interfaz lo común y le pedimos las operaciones necesarias (p.e. enviar una notificación, añadir a la lista de novedades, guardar en MinIO, ...). La interfaz representa el contrato y ya no se depende de implementaciones concretas, sino de abstracciones
+
+[TIP]
+====
+Cuando queremos añadir algo nuevo derivado de la acción realizada (p.e. añadir un nuevo video) no tenemos que modificar la clase. También lo tenemos presente cuando calculamos el sueldo en función del tipo de empleado y nos enfrentamos a que llega un tipo de empleado nuevo.
+Podemos publicar un evento de dominio y añadir nuevos suscriptores para los nuevos casos de uso.
+====
+
+.Indicios de violación del OCP
+****
+Tener un parámetro y con un `if` o `switch` usar una lógica u otra. Cada ez que haya que añadir algo habría que ir buscando todos los `if` o `switch` donde se controle eso y actualizarlos.
+****
+
+## Principio de sustitución de Liskov
+
+El comportamiento de las subclases debe respetar el contrato establecido en la superclase.
+
+Clase Rectangle:
+
+[source, java]
+----
+class Rectangle {
+
+    private Integer length;      
+    private Integer width;
+
+    Rectangle(Integer length, Integer width) {  
+        this.length = length;
+        this.width = width;
+    }
+
+    void setLength(Integer length) {
+        this.length = length;
+    }
+
+    void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    Integer getArea() {
+        return this.length * this.width;
+    }
+}
+----
+
+Clase Square:
+
+[source,java]
+----
+final class Square extends Rectangle {
+    Square(Integer lengthAndWidth) {
+        super(lengthAndWidth, lengthAndWidth);
+    }
+
+    @Override
+    public void setLength(Integer length) {
+      super.setLength(length);
+      super.setWidth(length);
+    }
+    @Override
+    public void setWidth(Integer width) {
+      super.setLength(width);
+      super.setWidth(width);
+    }
+}
+----
+
+El problema aparece cuando queremos calcular el área de un cuadrado usando el método del rectángulo, manteniendo el contrato establecido en la clase padre.
+
+Test SquareShould:
+
+[source,java]
+----
+final class SquareShould {
+    @Test
+    void not_respect_the_liskov_substitution_principle_breaking_the_rectangle_laws_while_modifying_its_length() {
+        Integer squareLengthAndWidth = 2;
+        Square square = new Square(squareLengthAndWidth);
+
+        Integer newSquareLength = 4;
+        square.setLength(newSquareLength);
+
+        Integer expectedAreaTakingIntoAccountRectangleLaws = 8;
+
+        assertNotEquals(expectedAreaTakingIntoAccountRectangleLaws, square.getArea());
+	  }
+}
+----
+
+.Indicios del violación del LSP
+****
+_Preconditions cannot be strengthened in a subtype_. En este caso, en Rectangulo no hay ninguna precondición, length y width pueden tener cualquier valor y no tienen relación entre ellas. Pero cuadrado está añadiendo una "precondición", length y width deben tener siempre el mismo valor.
+****

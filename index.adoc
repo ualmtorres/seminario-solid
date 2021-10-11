@@ -47,13 +47,19 @@ Disponible el https://github.com/ualmtorres/tutorial-nest-js[repositorio] usado 
 
 En un buen diseño hay cosas que tenemos que hacer y cosas que tenemos que evitar. Básicamente debemos favorecer la reutilización de código y la extensibilidad.
 
-Por un lado, la reutilización ayuda a reducir los costes reduciendo la creación de código desde cero y promoviendo la reutilización de código en proyectos existentes. En este sentido el uso de patrones de diseño es una forma de aumentar la flexibilidad del software y hacerlos más fáciles de reutilizar. No obstante, hay que tener en cuenta que en ocasiones el precio a pagar puede que no merezca la pena. Pero en proyectos grandes y con vistas a ser ampliados con el paso del tiempo, se convierten en algo prácticamente imprescindible. El caso más básico de reutilización lo encontramos en la reutilización de librerías de clases. En un nivel bastante más alto nos encontramos a los frameworks en los que ya hay tomadas una serie de decisiones de diseño y de organización de archivos. En un nivel intermedio situamos a los patrones de diseño, que nos ayudarn a definir una organización de clases y la forma en la que interactúan para dar respuesta a un problema concreto.
+Por un lado, la reutilización ayuda a reducir los costes reduciendo la creación de código desde cero y promoviendo la reutilización de código en proyectos existentes. En este sentido el uso de patrones de diseño es una forma de aumentar la flexibilidad del software y hacerlos más fáciles de reutilizar. No obstante, hay que tener en cuenta que en ocasiones el precio a pagar puede que no merezca la pena. Pero en proyectos grandes y con vistas a ser ampliados con el paso del tiempo, se convierten en algo prácticamente imprescindible. El caso más básico de reutilización lo encontramos en la reutilización de librerías de clases. En un nivel bastante más alto nos encontramos a los frameworks en los que ya hay tomadas una serie de decisiones de diseño y de organización de archivos. En un nivel intermedio situamos a los patrones de diseño, que nos ayudan a definir una organización de clases y la forma en la que interactúan para dar respuesta a un problema concreto.
 
 Por otro lado, la extensibilidad es una constante en el desarrollo de proyectos software. Está presente cuando nos piden abrir una línea de una aplicación móvil complementaria a la aplicación actual. Está presente cuando hay que hacer cambios a nivel de diseño de la interfaz de usuario. Está presente cuando hay un cambio en las reglas de negocio. Y está presente cuando hay que incluir nuevas funcionalidades.
 
-Aunque no hay respuestas sencillas a priori para establecer cuando un diseño es bueno, sí que hay una serie de principios universales que nos pueden ser de ayuda y que sirven de base para los patrones de diseño. Básicamente se trata de encapsular lo que varía, programar sobre una interfaz y no sobre una implementación, y favorecer el uso de la composición respecto de la herencia.
+Aunque no hay respuestas sencillas a priori para establecer cuando un diseño es bueno, sí que hay una serie de principios universales que nos pueden ser de ayuda y que sirven de base para los patrones de diseño. Básicamente se trata de:
 
-## Principios de diseño universales
+* Encapsular lo que varía.
+* Programar sobre una interfaz y no sobre una implementación.
+* Favorecer el uso de la composición respecto de la herencia.
+
+Comencemos!!
+
+## Principios de diseño
 
 ### Encapsular lo que varía
 
@@ -111,13 +117,13 @@ Si la complejidad del método aumenta y empieza a dedicarse a más de una cosa, 
 
 image::PedidoAntesDeExtraerClase.png[]
 
-Si ahora sacamos el método del cálculo de clases a otra clase aparte, conseguimos aislar en otra clase lo que puede variar y se deja la clase `Order` para las operaciones relacionadas estrictamente con los pedidos (registro, consulta, ...).
+Si ahora sacamos el método del cálculo de impuestos a otra clase aparte, conseguimos aislar en otra clase lo que puede variar y se deja la clase `Order` para las operaciones relacionadas estrictamente con los pedidos (registro, consulta, ...).
 
 image::PedidoDespuesDeExtraerClase.png[]
 
 ### Programar sobre una interfaz y no sobre una implementación
 
-Cuando queremos que dos clases colaboren se debe evitar que una dependa de la otra. Una forma más flexible hace lo siguiente:
+Cuando queremos que dos clases colaboren se debe evitar que una dependa de la otra. Una forma más flexible sigue los pasos siguientes:
 
 . Determinar qué es lo que necesita un objeto del otro.
 . Definir esos métodos en una nueva interfaz o en una nueva clase abstracta.
@@ -163,6 +169,7 @@ Este nuevo enfoque es mucho más versátil y limpio.
 
 ## Principios SOLID
 
+SOLID es un acrónimo de 5 principios de diseño que ofrecen varias ventajas:
 
 * Ayudan a programar mejor creando un código más fácil de mantener 
 * Ayudan a mejorar una propuesta de diseño de software
@@ -173,11 +180,11 @@ Este nuevo enfoque es mucho más versátil y limpio.
 [NOTE]
 ====
 * Deuda técnica: Hacer algo mal que va acompañándonos todo el proyecto.
-* Optimización prematura (crédito técnico): Complicar demasiado la arquitectura por su en un futuro se necesita cuando en realidad no hace falta.
+* Optimización prematura (crédito técnico): Complicar demasiado la arquitectura por si en un futuro se necesita, cuando en realidad no hace falta.
 * Todos los desarrolladores de un equipo deberían tener nociones de diseño de software para fomentar la autonomía y agilidad del equipo
 ====
 
-### STUPID
+### STUPID o lo contrario de SOLID
 
 * Singleton: Este objeto va dando vueltas por todo el programa (p.e. caché en memoria). El problema es que genera mucho acoplamiento y dificulta el testing.
 * Tight coupling: Conoces la implementación (p.e. MySQL, proveedor de mailing). Hay que ir cambiando en cada una de las clases que lo usen. Dificulta el mantenimiento.
@@ -186,37 +193,56 @@ Este nuevo enfoque es mucho más versátil y limpio.
 * Indescriptive naming
 * Duplication. Mejor generar abstracciones o extracciones buscando la responsabilidad única.
 
-## Principios de diseño
+## Principio de Responsabilidad Única (SRP)
 
-## Principio de Responsabilidad Única
+*Una clase debería tener sólo una razón para cambiar.*
 
-* Concepto:
-    ** Una clase = Un concepto y responsabilidad
-    ** Una clase debería tener sólo 1 razón para cambiar
-* Cómo conseguirlo:
-    ** Clases de servicios pequeñas con objetivos acotados
-+
-[NOTE]
+Una clase debe ser responsable de un único concepto (una parte de la funcionalidad proporcionada por la aplicación) y hace que toda esa responsabilidad esté encapsulada (oculta) en la clase. Si tenemos una clase que hace demasiadas cosas habrá que cambiarla cada vez que cambien esas cosas, arriesgándonos a romper otras partes de la clase que no se querían cambiar. Sería como llevar a cambiarle las ruedas al coche y notar que después de cambiarlas han dejado de funcionar los intermitentes.
+
+Se trata de tener clases de servicios pequeñas con objetivos acotados.
+
+
+[TIP]
 ====
-Un servicio aquello que orquesta un conjunto de pasos interactuando con otros elementos del sistema y toca infraestructura (para enviar emails -construir, validar si es correcto).
-**Cada servicio sólo debe tener un método público**
-Mejor tener un EmailSender que no un EmailService que puede agupar funciones variadas.
+La respuesta sobre el criterio de por dónde empezar a dividir una clase, o en general un módulo, la podemos encontrar ya no tanto en el _de qué es responsable la clase o el módulo_, sino en el _a quién atiende_ o _quién es la persona responsable de que pueda cambiar_. **_¿Quiénes son las personas que pueden querer introducir un cambio en el software_?**
 ====
-* Finalidad:
+
+Aquí se muestra una clase que tiene varios motivos para cambiar (gestionar los datos de los empleados e imprimir su informe horario, que puede cambiar a lo largo del tiempo)
+
+image::SRPEmployeeAntes.png[]
+ 
+Solucionamos el problema llevando la responsabilidad de imprimir el informe horario a una clase aparte.
+
+image::SRPEmployeeDespues.png[]
+
+Como objetivos del SRP tenemos:
+
     ** Alta cohesión y robustez
     ** Permitir composición de clases (inyectar colaboradores). Evitamos tener una clase con 5 métodos inyectando 5 clases a la clase original
     ** Evitar duplicidad de código gracias a la reutilización de clases "pequeñas" (composición)
-    
-Evitamos servicios como OrderAnalyzer u OrderProcessor porque términos genéricos nos abocan a acabar con más de 1 responsabilidad
-Preferimos servivios como OrderTrustabilityChecker u OrderMarginCalculator porque son más específicos y no abren la puerta a añadir más funcionalidades.
+
+[TIP]
+====
+Evitamos servicios como `OrderAnalyzer` u `OrderProcessor` porque términos genéricos nos abocan a acabar con más de una responsabilidad. Preferimos servicios como `OrderTrustabilityChecker` u `OrderMarginCalculator` porque son más específicos y no abren la puerta a añadir más funcionalidades. Esto también facilita localizar el código encargado de una función concreta.
+====
+
+[NOTE]
+====
+Un servicio es aquello que orquesta un conjunto de pasos interactuando con otros elementos del sistema y toca infraestructura (para enviar emails -construir, validar si es correcto).
+
+**Cada servicio sólo debe tener un método público**.
+
+Mejor tener un EmailSender que no un EmailService, que puede terminar agrupando funciones variadas.
+====
 
 ### Ejemplo sencillo
 
 #### Violación SRP en modelo de dominio
 
+Modelo de dominio `Book`:
+
 [source, java]
 ----
-Modelo de dominio Book:
 
 
 final class Book
@@ -252,7 +278,7 @@ final class Client
 
 [CAUTION]
 ====
-Motivo del por qué no respetamos SRP: Book está acoplada al canal estándar de salida al imprimir la página actual. Sabe cómo modelar los datos y cómo imprimirlos.
+Motivo del por qué no respetamos SRP: `Book` está acoplada al canal estándar de salida al imprimir la página actual. Sabe cómo modelar los datos y cómo imprimirlos.
 ====
     
 #### Refactor respetando SRP
@@ -308,7 +334,7 @@ final class Client
 
 #### Aplicando modularidad
 
-Esto lo veremos en detalle en la lección del Principio de Inversión de Dependencias (DIP) de este mismo curso:
+Esto lo veremos en detalle más adelante en Principio de Inversión de Dependencias (DIP):
 
 
 Interface Printer:
@@ -351,11 +377,11 @@ final class StandardOutputHtmlPrinter implements Printer
 ### No usar getters y setters
 
 * Evitar modelos anémicos: clases de dominio sólo con variables de instancia y sin comportamiento, es decir, que parezcan un DTO.
-* No definir las variables de instancia como públicos para acceder directamente. Abre el modelo a problemas de integridad e inconsistencia en el modelo. Convertimos las variables de instancia en privadas y definimos getters y setters.
+* No definir las variables de instancia como públicos para acceder directamente. Abre el modelo a problemas de integridad e inconsistencia en el modelo. Convertimos las variables de instancia en privadas y definimos los getters y sólo los setters que sean necesarios.
 * Creamos un constructor con sus variables de instancia.
 * La lógica de las entidades no debe estar fuera de ellas repartida por la aplicación (servicios usando getters y construyendo la lógica de negocio fuera). En su lugar, la lógica está en la entidad y le preguntas si se cumple la lógica o no. Un método como el de saber si es el cumpleaños de un usuario tiene que estar en el usuario, no fuera.
-    ** El comportamiento de IsHisBirthday() no debería estar en Mail.SendNotifications().
-    ** El comportamiento de IsPackable() basado en el volumen de un objeto no debería estar en una clase Sender, sino que debería ser de la clase Product.
+    ** El comportamiento de `IsHisBirthday()` no debería estar en `Mail.SendNotifications()`, sino en el empleado.
+    ** El comportamiento de `IsPackable()` basado en el volumen de un objeto no debería estar en una clase `Sender`, sino que debería ser de la clase `Product`.
 
 ### Ejemplo VideoController
 
@@ -413,20 +439,21 @@ class VideoController extends BaseController
 .Indicios de violación del SRP
 ****
 * Tener varios endpoints diferentes (con acciones POST, PUT, DELETE, ...), reunirlos en un solo controlador que luego derive cada endpoint a sus respectivos servicios es un indicio de violación del SRP. Esto va en contra de tener un controlador por tipo de recurso con todos sus verbos, pero separar el controlador por verbo genera simplicidad aunque aumenta el número de archivos.
-* Tener un método con un argumento en función del cual se haga una cosa u otra en un `switch` o `if` en lugar de tantos métodos como condiciones genere el parámetro pasado al argumento es un indicio de violación del SRP.
+* Optamos por servicios que se dediquen a una sola cosa. Por tanto, una clase de un servicio con varios métodos públicos puede ser un indicio violación del SRP.
+* Los cambios pueden proceder de varias personas o secciones diferentes. Por ejemplo, los métodos de gestión/almacenamiento de libros traerán cambios desde la sección de Bases de datos, mientras que los métodos de impresión de libros traerán cambios desde Impresión. Otro ejemplo sobre empleados, los métodos de gestión/almacenamiento de libros traerán cambios desde la sección de Bases de datos, los métodos de cálculo de nóminas vendrán desde Nómimas, mientras que los de fichaje vendrán desde Personal.
 ****
 
-## Principio de Abierto/Cerrado
+## Principio de Abierto/Cerrado (OCP)
 
-* El software debe estar abierto a extensión y cerrado a modificación haciendo uso de interfaces o de clases abstractas. 
-* Finalidad
-    ** Facilitar la incorporación de nuevos casos de uso a la aplicación o acciones derivadas.
-* Cómo conseguirlo
-    ** Abstraemos a una interfaz lo común y le pedimos las operaciones necesarias (p.e. enviar una notificación, añadir a la lista de novedades, guardar en MinIO, ...). La interfaz representa el contrato y ya no se depende de implementaciones concretas, sino de abstracciones
+*Las clases deben estar abiertas a extensión pero cerradas a modificación*. Realmente debemos entenderlo como que deberíamos poder extender el comportamiento de una clase sin necesidad de modificar la clase.
+
+Esto lo conseguiremos haciendo uso de interfaces o de clases abstractas a las que pedimos las operaciones necesarias (p.e. enviar una notificación, añadir a la lista de novedades, guardar en MinIO, ...). La interfaz representa el contrato y ya no se depende de implementaciones concretas, sino de abstracciones
+
+Un beneficio directo es que se facilita la incorporación de nuevos pasos o acciones derivadas a casos de uso de la aplicación sin necesidad de modificar el código existente.
 
 [TIP]
 ====
-Cuando queremos añadir algo nuevo derivado de la acción realizada (p.e. añadir un nuevo video) no tenemos que modificar la clase. También lo tenemos presente cuando calculamos el sueldo en función del tipo de empleado y nos enfrentamos a que llega un tipo de empleado nuevo.
+Cuando queremos añadir algo nuevo (p.e. guardar en Google Drive) derivado de la acción realizada (p.e. añadir un nuevo video) no tenemos que modificar la clase. También lo tenemos presente cuando calculamos el sueldo en función del tipo de empleado y nos enfrentamos a que llega un tipo de empleado nuevo.
 Podemos publicar un evento de dominio y añadir nuevos suscriptores para los nuevos casos de uso.
 ====
 
@@ -435,11 +462,158 @@ Podemos publicar un evento de dominio y añadir nuevos suscriptores para los nue
 Tener un parámetro y con un `if` o `switch` usar una lógica u otra. Cada ez que haya que añadir algo habría que ir buscando todos los `if` o `switch` donde se controle eso y actualizarlos.
 ****
 
-## Principio de sustitución de Liskov
+Aquí se muestra una clase que tiene varios costes de envío implementados en la misma clase. Si hay que añadir un nuevo método de envío hay que modificar el código de la clase y nos arriesgamos a romperla.
 
-El comportamiento de las subclases debe respetar el contrato establecido en la superclase.
+image::OCPOrderAntes.png[]
 
-Clase Rectangle:
+Se trata de extraer los métodos en clases separadas (una por cada método de envío) con una interfaz común.
+
+image::OCPOrderDespues.png[]
+
+Tras el cambio, cuando haya que implementar un nuevo método de envío basta con crear una nueva subclase de `Shipping` sin necesidad de tocar el código de `Order`. Los pedidos quedarán ligados al nuevo método de envío cuando los usuarios seleccionen el método de envío en la aplicación.
+
+### Incorporación de acciones derivadas
+
+Tenemos el caso de `VideoCreator` que inicialmente se dedicaba a guardar un video en bases de datos, pero se necesita también incrementar el número de videos por usuario, añadir notificación, enviar email de conformación, ...)
+
+Este no es el caso de acoplarnos a una interfaz (p.e. tipo de envío) e ir añadiendo clases específicas después (p.e. para los distintos tipos de envío). Ahora lo que haremos es publicar un evento de dominio y cada una de las acciones derivadas son realmente suscripciones (con sus acciones) asociadas a la publicación del evento de dominio.
+
+### Otro ejemplo (Tribalbyte)
+
+Sacado de 
+
+Tenemos una clase CalculationService que se encarga de devolvernos el cálculo del área de un polígono, el método getArea recibe como parámetro un objeto de tipo Polygon. Polygon es la clase padre de la que extienden todos los polígonos en nuestra aplicación y tiene una propiedad type que nos diferencia el tipo de polígono que es para realizar un cálculo del área apropiado, en este ejemplo utilizaremos el cuadrado y el círculo.
+
+[source. java]
+----
+class CalculationService {
+  
+    public void getArea(Polygon p) { <1>
+float result = 0;
+    if (p.type==1){
+        result = areaSquare(p);
+    } else if (p.type==2){
+        result = areaCircle(p);
+}
+return result;
+ }
+ 
+    public void areaCircle(Circle circle) {
+return Math.PI * Math.pow(circle.getRadius,2);
+}
+ 
+    public void areaSquare(Square square) {
+    return Math.pow(square.getSide,2);
+}
+ }
+  
+ class Polygon { <2>
+    int type;
+ }
+  
+ class Square extends Polygon {
+int side;
+ 
+    public Square(int side) {
+        super.type=1;
+this.side = side;
+}
+ 
+public int getSide(){
+        return this.side;
+        }
+ 
+ 
+}
+  
+class Circle extends Polygon {
+int radius;
+ 
+    public Circle(int radius) {
+        super.type=2;
+this.radius = radius;
+}
+ 
+public int getRadius(){
+        return this.radius;
+        }
+ 
+ 
+} 
+----
+<1> Tendremos que modificar ante nuevos tipos de polígonos
+<2> La raíz del problema
+
+Si en el código anterior quisiéramos añadir un nuevo tipo de polígono, por ejemplo un triángulo, tendríamos que crear la nueva clase Triangle que extendería de Polygon, y añadir diversos cambios en la clase CalculationService para añadir un nuevo método areaTriangle y modificar getArea para registrar el nuevo tipo de polígono.
+
+En este caso sería necesario realizar bastantes modificaciones en CalculationService para poder extender la funcionalidad, estaríamos incumpliendo el principio de abierto-cerrado.
+
+La solución:
+
+[source, java]
+----
+class CalculationService {
+    public void getArea(Polygon p) {
+        return p.area();
+    }
+ }
+  
+ class Polygon {
+    abstract void area();
+ }
+  
+ 
+class Square extends Polygon {
+int side;
+ 
+    public Square(int side) {
+this.side = side;
+}
+ 
+    public void area() {
+        return Math.pow(side,2);
+    }
+}
+ 
+ 
+class Circle extends Polygon {
+int radius;
+ 
+    public Circle(int radius) {
+        this.radius = radius;
+    }
+ 
+    public void area() {
+        return Math.PI * Math.pow(radius,2);
+    }
+ }
+
+----
+
+Ahora al añadir una nueva clase para triángulos
+
+[source, java]
+----
+class Triangle extends Polygon {
+int base;
+int height;
+ 
+    public Triangle(int base, int height) {
+        this.base = base;
+this.height = height;
+}
+ 
+    public void area() {
+        return base*height/2;
+    }
+ }
+----
+
+## Principio de sustitución de Liskov (LSP)
+
+*El comportamiento de las subclases debe respetar el contrato establecido en la superclase.* Es decir, se deberían poder pasar objetos de la subclase en lugar de objetos de la superclase sin que quede roto el código del cliente. Los objetos de la sublase deberían ser compatibles con el código que funcionaba con objetos de la superclase.
+
+Clase `Rectangle`:
 
 [source, java]
 ----
@@ -467,7 +641,7 @@ class Rectangle {
 }
 ----
 
-Clase Square:
+Clase `Square`:
 
 [source,java]
 ----
@@ -514,4 +688,362 @@ final class SquareShould {
 .Indicios del violación del LSP
 ****
 _Preconditions cannot be strengthened in a subtype_. En este caso, en Rectangulo no hay ninguna precondición, length y width pueden tener cualquier valor y no tienen relación entre ellas. Pero cuadrado está añadiendo una "precondición", length y width deben tener siempre el mismo valor.
+* Los tipos de los parámetros en un método de la subclase son más concretos que los de ese método en la superclase.
+* El tipo devuelto por un método de la subclase es más genérico que el devuelto por ese método en la superclase (lo contrario que el anterior).
+* Un método de una subclase lanza un tipo de excepción al recibir un objeto de un tipo no deseado, o bien no hacer nada.
 ****
+
+### Ejemplo de los pájaros
+
+[source, java]
+----
+public class Bird {
+ 
+    public String eat(){
+        return food.name;
+    }
+ 
+    public String tweet(){
+        return tweet.sound;
+    }
+ 
+    public void fly(){
+        // flying functionality
+    }
+ 
+}
+...
+public class Sparrow extends Bird {
+ 
+    @Override
+    public String eat(){
+        return “Insect”;
+    }
+ 
+    @Override
+    public String tweet(){
+        return “Chirp”;
+    }
+ 
+}
+...
+public class Penguin extends Bird {
+ 
+    @Override
+    public String eat(){
+        return “Fish”;
+    }
+ 
+    @Override
+    public String tweet(){
+        return “Squawk”;
+    }
+ 
+    @Override
+    public void fly(){
+        throw new Exception(“Penguins can’t fly”); <1>
+    }
+ 
+}
+----
+<1> Indicio de violación del LSP
+
+La solución pasa por crear interfaces para el comportamiento de `eat`, `tweet` y `fly`. Las clases de las aves sólo implementarán las interfaces que tengan sentido.
+
+
+### Otro ejemplo
+
+Aquí vemos una subclase en el que el método `save` no tiene sentido por lo que la subclase trata de resetear el comportamiento base en el método sobrescrito. Si el cliente no comprueba el tipo de documento antes y pasa uno de solo lectura, el código queda roto.
+
+[NOTE]
+====
+Además, también infringe el OCP porque si se introduce un nuevo tipo de documento hay que cambiar el código para tener soporte para ese cambio.
+====
+
+image::LSPDocumentAntes.png[]
+
+La solución pasa por modificar la jerarquía de clases y ofrecer el método `save` en la clase que puede ofrecer esa funcionalidad.
+
+image::LSPDocumentDespues.png[]
+
+## Principio de Segregación de Interfaces (ISP)
+
+*No se debería forzar a los clientes a que dependan de métodos que no usan.*
+
+Huimos de interfaces gruesas o extensas. Se debe tender a crear interfaces lo suficientemente finas de forma que los clientes no tengan que implementar comportamientos que no necesitan. 
+
+En el ejemplo se ve una interfaz con demasiados métodos, que no son implementados por todos los proveedores cloud. Posiblemente cuando se creó se pensó que todos los proveedores cloud iban a tener el mismo repertorio de funcionalidades.
+
+image::ISPCloudProviderAntes.png[]
+
+La solución pasa por dividir la interfaz en partes de forma que las clases implementen las interfaces que necesiten.
+
+image::ISPCloudProviderDespues.png[]
+
+Este principio, como los demás, debe ser usado con criterio y de forma equilibrada. Si no, podríamos tener interfaces demasiado específicas que complicarían el diseño y el código notablemente.
+
+Como consejo, se definirán los contratos de las interfaces basándonos en los clientes que las usan (casos de uso) y no en las implementaciones que se puedan tener. Se trata de lo siguiente.
+
+Partimos de la clase `UserRepositoryMySql`
+
+[source, php]
+----
+final class UserRepositoryMySql extends Repository implements UserRepository
+{
+    public function save(User $user): void
+    {
+        $this->entityManager()->persist($user);    
+    }
+
+    public function flush(User $user)
+    {
+        $this->entityManager()->flush($user);
+    }
+
+    public function saveAll(Users $users)
+    {
+        each($this->persister(),$users);
+    }
+}
+----
+
+Y para evitar acoplarnos a la clase, extraemos sus métodos a una interface
+
+Interface `UserRepository` creada a partir de una implementación:
+
+[source, php]
+----
+interface UserRepository
+{
+    public function save(User $user): void;
+    
+    public function flush(User $user): void; <1>
+
+    public function saveAll(Users $users): void;
+    
+    public function search(UserId $id): ?User;
+    
+    public function all(): Users;
+}
+----
+<1> Este método no es necesario para otras bases de datos y es muy propio de MySQL.
+
+Contar con el método `flush` en la interface no es adecuado porque no lo van usar otras clases si usamos otras bases de datos. Por tanto, no debemos dejarnos llevar y crear la intefaces directamente tomando los métodos de las implementaciones. Es más adecuado crear una interface a partir de lo que necesitan sus clientes, en este caso un caso de uso. Así, en la interface necesitaríamos únicamente un método `save` pudiendo prescindir del método `flush`.
+
+Interface `UserRepository` creada pensando en sus clientes y no en la implementación. El método `flush` ya no está presente:
+
+[source, php]
+----
+interface UserRepository
+{
+    public function save(User $user): void;
+
+    public function saveAll(Users $users): void;
+    
+    public function search(UserId $id): ?User;
+    
+    public function all(): Users;
+}
+----
+
+El método `flush` ahora pasa a estar _oculto_ en la llamada al método `save` por parte de la clase MySQL que implementa la interface
+
+Clase `UserRepositoryMySql`:
+
+[source, php]
+----
+final class UserRepositoryMySql extends Repository implements UserRepository
+{
+    ...
+    public function save(User $user): void
+    {
+        $this->entityManager()->persist($user);    
+        $this->entityManager()->flush($user); <1>
+    }
+    ...
+}
+----
+<1> `flush` ha desaparecido de la interface y ahora está dentro del método `save`, ya que es una particularidad de MySQL y no es un método necesario para cualqiuer cliente de la interface.
+
+## Principio de Inversión de Dependencias (DIP)
+
+* Las clases de alto nivel (negocio) no deberían depender de las clases de bajo nivel (infraestructura -bases de datos, red, ...). Ambas deberían depender de abstracciones (p.ej., interfaces).
+* Las abstracciones no deberían depender de los detalles. Los detalles (implementaciones concretas) deben depender de abstracciones.
+
+Un ejemplo típico lo encontramos en el uso directo de bases de datos, lo que puede provocar un problema si cambiamos de base de datos, o algo más fácil, que se produzcan cambios notables en nuevas versiones de la base de datos utilizada. Esto afectaría de forma inesperada a la clase de alto nivel (negocio).
+
+image::DIPDatabaseAntes.png[]
+
+La solución pasa por crear una interfaz con las operaciones de bases de datos y hacer que las clases de alto nivel dependan de la interfaz en lugar de la clase concreta. Los cambios se realizan en las clases de bajo nivel que implementan la interfaz. Ahora todo depende de las abstracciones.
+
+image::DIPDatabaseDespues.png[]
+
+[TIP]
+====
+Para cumplir el DIP:
+
+* Inyectaremos dependencias a través del constructor
+* Usamos las interfaces de esas dependencias y no implementaciones concretas
+====
+
+### Otro ejemplo (Tribalbyte)
+
+Sacado de https://tech.tribalyte.eu/blog-principios-solid-dependency
+
+Veamos otro ejemplo con código. Supongamos que tenemos un software que procesa una serie de documentos almacenados en una base de datos y les aplica una firma. El código estaría formado por tres clases, una que contiene el acceso a la base de datos, otra con los algoritmos necesarios para generar la firma y una tercera clase con la lógica de negocio que implementa y utiliza instancias de las anteriores clases.
+
+[source, java]
+----
+public class MongoDatabase {
+    public Document getDocument(int id){
+        // Access to DB and returns the document with the corresponding ID
+    }
+}
+ 
+public class MySignature {
+    public void signMD5withRSA(Document doc){
+        // Algorithm to sign document
+    }
+}
+ 
+public class ProcessDocument {
+    public void signDocument(int id) {
+         
+        MongoDatabase mongoDatabase = new MongoDatabase();
+        Document doc = mongoDatabase.getDocument(id);
+ 
+        MySignature signature = new MySignature();
+        signature.signMD5withRSA(doc);
+    }
+}
+----
+
+En este caso la clase de más alto nivel, que procesa los documentos, está dependiendo de módulos de bajo nivel, como son el acceso a base de datos y el proceso de firma de documentos. Si en un futuro nuestro requerimientos del software cambian y nos vemos obligados a modificar el algoritmo de firma o utilizar otro cliente de base de datos, es muy probable que las modificaciones afecten a la clase ProcessDocument.
+
+Si aplicamos el principio de inversión de dependencias, deberíamos sustituir en nuestra clase ProcessDocument las dependencias a implementaciones concretas por abstracciones. Para ello crearemos dos interfaces que definen los comportamiento que debe tener una clase para acceder a la base de datos o para realizar una firma. Ahora la implementación concreta es recibida en el constructor de ProcessDocument. El código resultante sería el siguiente.
+
+[source, java]
+----
+public interface IDatabase {
+    Document getDocument(int id);
+}
+ 
+public class MongoDatabase implements IDatabase {
+      
+    @Override
+    public Document getDocument(int id){
+        // Get document from mongo DB
+    }
+}
+ 
+public interface ISignature {
+    void sign(Document doc);
+}
+ 
+public class MySignature implements ISignature {
+      
+    @Override
+    public void sign(Document doc){
+        // Signature logic
+    }
+}
+ 
+public class ProcessDocument {
+    private final IDatabase database;
+    private final ISignature signature;
+ 
+    public ProcessDocument(IDatabase database, ISignature signature) {
+        this.database = database;
+        this.signature = signature;
+    }
+     
+    public void signDocument(int id) {
+        Document doc = this.database.getDocument(id);
+        this.signature.sign(doc);
+    }
+}
+----
+
+## Specification Pattern o Criteria
+querer filtrar el contenido por los distintos campos que tiene nuestra tabla, ordenar por cada uno de estos y paginarlos.
+Esta necesidad podría implicar que tuvieramos que implementar bien un montón de métodos con las distintas casuísticas, o bien un método mastodóntico con todos los parámetros posibles en dichas casuísticas.
+
+Clase Criteria:
+
+[source, php]
+----
+final class Criteria
+{
+    private $filters;
+    private $order;
+    private $offset;
+    private $limit;
+    public function __construct(Filters $filters, ?Order $order, ?int $offset, ?int $limit)
+    {
+        $this->filters = $filters;
+        $this->order   = $order;
+        $this->offset  = $offset;
+        $this->limit   = $limit;
+    }
+    // ...
+----
+
+La solución a través de este patrón nos propone tener una clase Criteria en nuestro dominio compuesta por tres partes:
+
+* Filters (campos de nuestro backoffice)
+* Order (opt)
+* Pagination (opt)
+
+Clase Filter:
+
+[source, php]
+----
+final class Filter
+{
+    private $field;
+    private $operator;
+    private $value;
+    public function __construct(FilterField $field, FilterOperator $operator, FilterValue $value)
+    {
+        $this->field    = $field;
+        $this->operator = $operator;
+        $this->value    = $value;
+    }
+    // ...
+----
+
+Cada uno de nuestros Filter está compuesto por un campo, un operador a utilizar y el valor que va a filtrarse
+
+Clase Order:
+
+[source, php]
+----
+final class Order
+{
+    private $orderBy;
+    private $orderType;
+    public function __construct(OrderBy $orderBy, OrderType $orderType)
+    {
+        $this->orderBy   = $orderBy;
+        $this->orderType = $orderType ?: OrderType::asc();
+    }
+    // ....
+----
+
+A nivel de ordenación, vemos cómo en nuestro Order estamos definiendo y pasando como argumento en el constructor el tipo de campo y tipo de orden por el que se realizará la búsqueda.
+
+La paginación de la búsqueda se compondría de los argumentos $offset y $limit que veíamos en el constructor de nuestra clase Criteria.
+
+Interface VideoRepository:
+
+[source, php]
+----
+interface VideoRepository
+{
+    public function save(Video $video): void;
+    public function search(VideoId $id): ?Video;
+    public function searchByCriteria(Criteria $criteria): Videos;
+}
+----
+
+De este forma, nuestro VideoRepository sólo necesita llamar a searchByCriteria, que recibirá como argumento un objeto Criteria, para cualquier filtro que queramos aplicar en nuestra búsqueda. Serán las distintas implementaciones de nuestro repositorio las encargadas de convertir este Criteria en una consulta preparada para su BD.

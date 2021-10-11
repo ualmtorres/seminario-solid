@@ -448,7 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#trueresumen">Resumen</a></li>
 <li><a href="#trueintroducción">1. Introducción</a></li>
-<li><a href="#trueprincipios-de-diseño-universales">2. Principios de diseño universales</a>
+<li><a href="#trueprincipios-de-diseño">2. Principios de diseño</a>
 <ul class="sectlevel2">
 <li><a href="#trueencapsular-lo-que-varía">2.1. Encapsular lo que varía</a></li>
 <li><a href="#trueprogramar-sobre-una-interfaz-y-no-sobre-una-implementación">2.2. Programar sobre una interfaz y no sobre una implementación</a></li>
@@ -457,19 +457,35 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#trueprincipios-solid">3. Principios SOLID</a>
 <ul class="sectlevel2">
-<li><a href="#truestupid">3.1. STUPID</a></li>
+<li><a href="#truestupid-o-lo-contrario-de-solid">3.1. STUPID o lo contrario de SOLID</a></li>
 </ul>
 </li>
-<li><a href="#trueprincipios-de-diseño">4. Principios de diseño</a></li>
-<li><a href="#trueprincipio-de-responsabilidad-única">5. Principio de Responsabilidad Única</a>
+<li><a href="#trueprincipio-de-responsabilidad-única-srp">4. Principio de Responsabilidad Única (SRP)</a>
 <ul class="sectlevel2">
-<li><a href="#trueejemplo-sencillo">5.1. Ejemplo sencillo</a></li>
-<li><a href="#trueno-usar-getters-y-setters">5.2. No usar getters y setters</a></li>
-<li><a href="#trueejemplo-videocontroller">5.3. Ejemplo VideoController</a></li>
+<li><a href="#trueejemplo-sencillo">4.1. Ejemplo sencillo</a></li>
+<li><a href="#trueno-usar-getters-y-setters">4.2. No usar getters y setters</a></li>
+<li><a href="#trueejemplo-videocontroller">4.3. Ejemplo VideoController</a></li>
 </ul>
 </li>
-<li><a href="#trueprincipio-de-abiertocerrado">6. Principio de Abierto/Cerrado</a></li>
-<li><a href="#trueprincipio-de-sustitución-de-liskov">7. Principio de sustitución de Liskov</a></li>
+<li><a href="#trueprincipio-de-abiertocerrado-ocp">5. Principio de Abierto/Cerrado (OCP)</a>
+<ul class="sectlevel2">
+<li><a href="#trueincorporación-de-acciones-derivadas">5.1. Incorporación de acciones derivadas</a></li>
+<li><a href="#trueotro-ejemplo-tribalbyte">5.2. Otro ejemplo (Tribalbyte)</a></li>
+</ul>
+</li>
+<li><a href="#trueprincipio-de-sustitución-de-liskov-lsp">6. Principio de sustitución de Liskov (LSP)</a>
+<ul class="sectlevel2">
+<li><a href="#trueejemplo-de-los-pájaros">6.1. Ejemplo de los pájaros</a></li>
+<li><a href="#trueotro-ejemplo">6.2. Otro ejemplo</a></li>
+</ul>
+</li>
+<li><a href="#trueprincipio-de-segregación-de-interfaces-isp">7. Principio de Segregación de Interfaces (ISP)</a></li>
+<li><a href="#trueprincipio-de-inversión-de-dependencias-dip">8. Principio de Inversión de Dependencias (DIP)</a>
+<ul class="sectlevel2">
+<li><a href="#trueotro-ejemplo-tribalbyte-2">8.1. Otro ejemplo (Tribalbyte)</a></li>
+</ul>
+</li>
+<li><a href="#truespecification-pattern-o-criteria">9. Specification Pattern o Criteria</a></li>
 </ul>
 </div>
 </div>
@@ -517,18 +533,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>En un buen diseño hay cosas que tenemos que hacer y cosas que tenemos que evitar. Básicamente debemos favorecer la reutilización de código y la extensibilidad.</p>
 </div>
 <div class="paragraph">
-<p>Por un lado, la reutilización ayuda a reducir los costes reduciendo la creación de código desde cero y promoviendo la reutilización de código en proyectos existentes. En este sentido el uso de patrones de diseño es una forma de aumentar la flexibilidad del software y hacerlos más fáciles de reutilizar. No obstante, hay que tener en cuenta que en ocasiones el precio a pagar puede que no merezca la pena. Pero en proyectos grandes y con vistas a ser ampliados con el paso del tiempo, se convierten en algo prácticamente imprescindible. El caso más básico de reutilización lo encontramos en la reutilización de librerías de clases. En un nivel bastante más alto nos encontramos a los frameworks en los que ya hay tomadas una serie de decisiones de diseño y de organización de archivos. En un nivel intermedio situamos a los patrones de diseño, que nos ayudarn a definir una organización de clases y la forma en la que interactúan para dar respuesta a un problema concreto.</p>
+<p>Por un lado, la reutilización ayuda a reducir los costes reduciendo la creación de código desde cero y promoviendo la reutilización de código en proyectos existentes. En este sentido el uso de patrones de diseño es una forma de aumentar la flexibilidad del software y hacerlos más fáciles de reutilizar. No obstante, hay que tener en cuenta que en ocasiones el precio a pagar puede que no merezca la pena. Pero en proyectos grandes y con vistas a ser ampliados con el paso del tiempo, se convierten en algo prácticamente imprescindible. El caso más básico de reutilización lo encontramos en la reutilización de librerías de clases. En un nivel bastante más alto nos encontramos a los frameworks en los que ya hay tomadas una serie de decisiones de diseño y de organización de archivos. En un nivel intermedio situamos a los patrones de diseño, que nos ayudan a definir una organización de clases y la forma en la que interactúan para dar respuesta a un problema concreto.</p>
 </div>
 <div class="paragraph">
 <p>Por otro lado, la extensibilidad es una constante en el desarrollo de proyectos software. Está presente cuando nos piden abrir una línea de una aplicación móvil complementaria a la aplicación actual. Está presente cuando hay que hacer cambios a nivel de diseño de la interfaz de usuario. Está presente cuando hay un cambio en las reglas de negocio. Y está presente cuando hay que incluir nuevas funcionalidades.</p>
 </div>
 <div class="paragraph">
-<p>Aunque no hay respuestas sencillas a priori para establecer cuando un diseño es bueno, sí que hay una serie de principios universales que nos pueden ser de ayuda y que sirven de base para los patrones de diseño. Básicamente se trata de encapsular lo que varía, programar sobre una interfaz y no sobre una implementación, y favorecer el uso de la composición respecto de la herencia.</p>
+<p>Aunque no hay respuestas sencillas a priori para establecer cuando un diseño es bueno, sí que hay una serie de principios universales que nos pueden ser de ayuda y que sirven de base para los patrones de diseño. Básicamente se trata de:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Encapsular lo que varía.</p>
+</li>
+<li>
+<p>Programar sobre una interfaz y no sobre una implementación.</p>
+</li>
+<li>
+<p>Favorecer el uso de la composición respecto de la herencia.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Comencemos!!</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="trueprincipios-de-diseño-universales"><a class="anchor" href="#trueprincipios-de-diseño-universales"></a>2. Principios de diseño universales</h2>
+<h2 id="trueprincipios-de-diseño"><a class="anchor" href="#trueprincipios-de-diseño"></a>2. Principios de diseño</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="trueencapsular-lo-que-varía"><a class="anchor" href="#trueencapsular-lo-que-varía"></a>2.1. Encapsular lo que varía</h3>
@@ -614,7 +646,7 @@ method getTaxRate(country) is <i class="conum" data-value="2"></i><b>(2)</b>
 </div>
 </div>
 <div class="paragraph">
-<p>Si ahora sacamos el método del cálculo de clases a otra clase aparte, conseguimos aislar en otra clase lo que puede variar y se deja la clase <code>Order</code> para las operaciones relacionadas estrictamente con los pedidos (registro, consulta, &#8230;&#8203;).</p>
+<p>Si ahora sacamos el método del cálculo de impuestos a otra clase aparte, conseguimos aislar en otra clase lo que puede variar y se deja la clase <code>Order</code> para las operaciones relacionadas estrictamente con los pedidos (registro, consulta, &#8230;&#8203;).</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -626,7 +658,7 @@ method getTaxRate(country) is <i class="conum" data-value="2"></i><b>(2)</b>
 <div class="sect2">
 <h3 id="trueprogramar-sobre-una-interfaz-y-no-sobre-una-implementación"><a class="anchor" href="#trueprogramar-sobre-una-interfaz-y-no-sobre-una-implementación"></a>2.2. Programar sobre una interfaz y no sobre una implementación</h3>
 <div class="paragraph">
-<p>Cuando queremos que dos clases colaboren se debe evitar que una dependa de la otra. Una forma más flexible hace lo siguiente:</p>
+<p>Cuando queremos que dos clases colaboren se debe evitar que una dependa de la otra. Una forma más flexible sigue los pasos siguientes:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -688,7 +720,7 @@ method getTaxRate(country) is <i class="conum" data-value="2"></i><b>(2)</b>
 <p>Una subclase no puede reducir la interface de la superclase. Hay que implementar todos los métodos abstractos de la clase padre aunque no se vayan a usar en la subclase.</p>
 </li>
 <li>
-<p>Los métodos sobrescritos tienen que ofrecer un comportamiento nuevo que sea compatible con de la superclase. Esto se debe a que puede que se pasen objetos de la subclase a métodos que esperen objetos de la superclase y no queremos que el código quede roto. Veremos más sobre esto en <a href="#trueprincipio-de-sustitución-de-liskov">Principio de sustitución de Liskov</a></p>
+<p>Los métodos sobrescritos tienen que ofrecer un comportamiento nuevo que sea compatible con de la superclase. Esto se debe a que puede que se pasen objetos de la subclase a métodos que esperen objetos de la superclase y no queremos que el código quede roto. Veremos más sobre esto en <a href="#Principio de sustitución de Liskov">[Principio de sustitución de Liskov]</a></p>
 </li>
 </ul>
 </div>
@@ -723,6 +755,9 @@ method getTaxRate(country) is <i class="conum" data-value="2"></i><b>(2)</b>
 <div class="sect1">
 <h2 id="trueprincipios-solid"><a class="anchor" href="#trueprincipios-solid"></a>3. Principios SOLID</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>SOLID es un acrónimo de 5 principios de diseño que ofrecen varias ventajas:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -755,7 +790,7 @@ method getTaxRate(country) is <i class="conum" data-value="2"></i><b>(2)</b>
 <p>Deuda técnica: Hacer algo mal que va acompañándonos todo el proyecto.</p>
 </li>
 <li>
-<p>Optimización prematura (crédito técnico): Complicar demasiado la arquitectura por su en un futuro se necesita cuando en realidad no hace falta.</p>
+<p>Optimización prematura (crédito técnico): Complicar demasiado la arquitectura por si en un futuro se necesita, cuando en realidad no hace falta.</p>
 </li>
 <li>
 <p>Todos los desarrolladores de un equipo deberían tener nociones de diseño de software para fomentar la autonomía y agilidad del equipo</p>
@@ -767,7 +802,7 @@ method getTaxRate(country) is <i class="conum" data-value="2"></i><b>(2)</b>
 </table>
 </div>
 <div class="sect2">
-<h3 id="truestupid"><a class="anchor" href="#truestupid"></a>3.1. STUPID</h3>
+<h3 id="truestupid-o-lo-contrario-de-solid"><a class="anchor" href="#truestupid-o-lo-contrario-de-solid"></a>3.1. STUPID o lo contrario de SOLID</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -794,57 +829,50 @@ method getTaxRate(country) is <i class="conum" data-value="2"></i><b>(2)</b>
 </div>
 </div>
 <div class="sect1">
-<h2 id="trueprincipios-de-diseño"><a class="anchor" href="#trueprincipios-de-diseño"></a>4. Principios de diseño</h2>
+<h2 id="trueprincipio-de-responsabilidad-única-srp"><a class="anchor" href="#trueprincipio-de-responsabilidad-única-srp"></a>4. Principio de Responsabilidad Única (SRP)</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p><strong>Una clase debería tener sólo una razón para cambiar.</strong></p>
 </div>
+<div class="paragraph">
+<p>Una clase debe ser responsable de un único concepto (una parte de la funcionalidad proporcionada por la aplicación) y hace que toda esa responsabilidad esté encapsulada (oculta) en la clase. Si tenemos una clase que hace demasiadas cosas habrá que cambiarla cada vez que cambien esas cosas, arriesgándonos a romper otras partes de la clase que no se querían cambiar. Sería como llevar a cambiarle las ruedas al coche y notar que después de cambiarlas han dejado de funcionar los intermitentes.</p>
 </div>
-<div class="sect1">
-<h2 id="trueprincipio-de-responsabilidad-única"><a class="anchor" href="#trueprincipio-de-responsabilidad-única"></a>5. Principio de Responsabilidad Única</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Concepto:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Una clase = Un concepto y responsabilidad</p>
-</li>
-<li>
-<p>Una clase debería tener sólo 1 razón para cambiar</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Se trata de tener clases de servicios pequeñas con objetivos acotados.</p>
 </div>
-</li>
-<li>
-<p>Cómo conseguirlo:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Clases de servicios pequeñas con objetivos acotados</p>
-<div class="admonitionblock note">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Un servicio aquello que orquesta un conjunto de pasos interactuando con otros elementos del sistema y toca infraestructura (para enviar emails -construir, validar si es correcto).
-<strong>Cada servicio sólo debe tener un método público</strong>
-Mejor tener un EmailSender que no un EmailService que puede agupar funciones variadas.</p>
+<p>La respuesta sobre el criterio de por dónde empezar a dividir una clase, o en general un módulo, la podemos encontrar ya no tanto en el <em>de qué es responsable la clase o el módulo</em>, sino en el <em>a quién atiende</em> o <em>quién es la persona responsable de que pueda cambiar</em>. <strong><em>¿Quiénes son las personas que pueden querer introducir un cambio en el software</em>?</strong></p>
 </div>
 </td>
 </tr>
 </table>
 </div>
-</li>
-</ul>
+<div class="paragraph">
+<p>Aquí se muestra una clase que tiene varios motivos para cambiar (gestionar los datos de los empleados e imprimir su informe horario, que puede cambiar a lo largo del tiempo)</p>
 </div>
-</li>
-<li>
-<p>Finalidad:</p>
+<div class="imageblock">
+<div class="content">
+<img src="./images/SRPEmployeeAntes.png" alt="SRPEmployeeAntes">
+</div>
+</div>
+<div class="paragraph">
+<p>Solucionamos el problema llevando la responsabilidad de imprimir el informe horario a una clase aparte.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/SRPEmployeeDespues.png" alt="SRPEmployeeDespues">
+</div>
+</div>
+<div class="paragraph">
+<p>Como objetivos del SRP tenemos:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -858,23 +886,50 @@ Mejor tener un EmailSender que no un EmailService que puede agupar funciones var
 </li>
 </ul>
 </div>
-</li>
-</ul>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Evitamos servicios como <code>OrderAnalyzer</code> u <code>OrderProcessor</code> porque términos genéricos nos abocan a acabar con más de una responsabilidad. Preferimos servicios como <code>OrderTrustabilityChecker</code> u <code>OrderMarginCalculator</code> porque son más específicos y no abren la puerta a añadir más funcionalidades. Esto también facilita localizar el código encargado de una función concreta.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Un servicio es aquello que orquesta un conjunto de pasos interactuando con otros elementos del sistema y toca infraestructura (para enviar emails -construir, validar si es correcto).</p>
 </div>
 <div class="paragraph">
-<p>Evitamos servicios como OrderAnalyzer u OrderProcessor porque términos genéricos nos abocan a acabar con más de 1 responsabilidad
-Preferimos servivios como OrderTrustabilityChecker u OrderMarginCalculator porque son más específicos y no abren la puerta a añadir más funcionalidades.</p>
+<p><strong>Cada servicio sólo debe tener un método público</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Mejor tener un EmailSender que no un EmailService, que puede terminar agrupando funciones variadas.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
-<h3 id="trueejemplo-sencillo"><a class="anchor" href="#trueejemplo-sencillo"></a>5.1. Ejemplo sencillo</h3>
+<h3 id="trueejemplo-sencillo"><a class="anchor" href="#trueejemplo-sencillo"></a>4.1. Ejemplo sencillo</h3>
 <div class="sect3">
-<h4 id="trueviolación-srp-en-modelo-de-dominio"><a class="anchor" href="#trueviolación-srp-en-modelo-de-dominio"></a>5.1.1. Violación SRP en modelo de dominio</h4>
+<h4 id="trueviolación-srp-en-modelo-de-dominio"><a class="anchor" href="#trueviolación-srp-en-modelo-de-dominio"></a>4.1.1. Violación SRP en modelo de dominio</h4>
+<div class="paragraph">
+<p>Modelo de dominio <code>Book</code>:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Modelo de dominio Book:
-
-
-final class Book
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">final class Book
 {
     public String getTitle()
     {
@@ -913,7 +968,7 @@ final class Book
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Motivo del por qué no respetamos SRP: Book está acoplada al canal estándar de salida al imprimir la página actual. Sabe cómo modelar los datos y cómo imprimirlos.</p>
+<p>Motivo del por qué no respetamos SRP: <code>Book</code> está acoplada al canal estándar de salida al imprimir la página actual. Sabe cómo modelar los datos y cómo imprimirlos.</p>
 </div>
 </td>
 </tr>
@@ -921,7 +976,7 @@ final class Book
 </div>
 </div>
 <div class="sect3">
-<h4 id="truerefactor-respetando-srp"><a class="anchor" href="#truerefactor-respetando-srp"></a>5.1.2. Refactor respetando SRP</h4>
+<h4 id="truerefactor-respetando-srp"><a class="anchor" href="#truerefactor-respetando-srp"></a>4.1.2. Refactor respetando SRP</h4>
 <div class="paragraph">
 <p>Clase Book:</p>
 </div>
@@ -976,9 +1031,9 @@ final class Book
 </div>
 </div>
 <div class="sect3">
-<h4 id="trueaplicando-modularidad"><a class="anchor" href="#trueaplicando-modularidad"></a>5.1.3. Aplicando modularidad</h4>
+<h4 id="trueaplicando-modularidad"><a class="anchor" href="#trueaplicando-modularidad"></a>4.1.3. Aplicando modularidad</h4>
 <div class="paragraph">
-<p>Esto lo veremos en detalle en la lección del Principio de Inversión de Dependencias (DIP) de este mismo curso:</p>
+<p>Esto lo veremos en detalle más adelante en Principio de Inversión de Dependencias (DIP):</p>
 </div>
 <div class="paragraph">
 <p>Interface Printer:</p>
@@ -1022,14 +1077,14 @@ final class Book
 </div>
 </div>
 <div class="sect2">
-<h3 id="trueno-usar-getters-y-setters"><a class="anchor" href="#trueno-usar-getters-y-setters"></a>5.2. No usar getters y setters</h3>
+<h3 id="trueno-usar-getters-y-setters"><a class="anchor" href="#trueno-usar-getters-y-setters"></a>4.2. No usar getters y setters</h3>
 <div class="ulist">
 <ul>
 <li>
 <p>Evitar modelos anémicos: clases de dominio sólo con variables de instancia y sin comportamiento, es decir, que parezcan un DTO.</p>
 </li>
 <li>
-<p>No definir las variables de instancia como públicos para acceder directamente. Abre el modelo a problemas de integridad e inconsistencia en el modelo. Convertimos las variables de instancia en privadas y definimos getters y setters.</p>
+<p>No definir las variables de instancia como públicos para acceder directamente. Abre el modelo a problemas de integridad e inconsistencia en el modelo. Convertimos las variables de instancia en privadas y definimos los getters y sólo los setters que sean necesarios.</p>
 </li>
 <li>
 <p>Creamos un constructor con sus variables de instancia.</p>
@@ -1039,10 +1094,10 @@ final class Book
 <div class="ulist">
 <ul>
 <li>
-<p>El comportamiento de IsHisBirthday() no debería estar en Mail.SendNotifications().</p>
+<p>El comportamiento de <code>IsHisBirthday()</code> no debería estar en <code>Mail.SendNotifications()</code>, sino en el empleado.</p>
 </li>
 <li>
-<p>El comportamiento de IsPackable() basado en el volumen de un objeto no debería estar en una clase Sender, sino que debería ser de la clase Product.</p>
+<p>El comportamiento de <code>IsPackable()</code> basado en el volumen de un objeto no debería estar en una clase <code>Sender</code>, sino que debería ser de la clase <code>Product</code>.</p>
 </li>
 </ul>
 </div>
@@ -1051,7 +1106,7 @@ final class Book
 </div>
 </div>
 <div class="sect2">
-<h3 id="trueejemplo-videocontroller"><a class="anchor" href="#trueejemplo-videocontroller"></a>5.3. Ejemplo VideoController</h3>
+<h3 id="trueejemplo-videocontroller"><a class="anchor" href="#trueejemplo-videocontroller"></a>4.3. Ejemplo VideoController</h3>
 <div class="paragraph">
 <p>Tenemos un controlador como punto de acceso a varias operaciones (endpoints) de la API</p>
 </div>
@@ -1129,7 +1184,10 @@ class VideoController extends BaseController
 <p>Tener varios endpoints diferentes (con acciones POST, PUT, DELETE, &#8230;&#8203;), reunirlos en un solo controlador que luego derive cada endpoint a sus respectivos servicios es un indicio de violación del SRP. Esto va en contra de tener un controlador por tipo de recurso con todos sus verbos, pero separar el controlador por verbo genera simplicidad aunque aumenta el número de archivos.</p>
 </li>
 <li>
-<p>Tener un método con un argumento en función del cual se haga una cosa u otra en un <code>switch</code> o <code>if</code> en lugar de tantos métodos como condiciones genere el parámetro pasado al argumento es un indicio de violación del SRP.</p>
+<p>Optamos por servicios que se dediquen a una sola cosa. Por tanto, una clase de un servicio con varios métodos públicos puede ser un indicio violación del SRP.</p>
+</li>
+<li>
+<p>Los cambios pueden proceder de varias personas o secciones diferentes. Por ejemplo, los métodos de gestión/almacenamiento de libros traerán cambios desde la sección de Bases de datos, mientras que los métodos de impresión de libros traerán cambios desde Impresión. Otro ejemplo sobre empleados, los métodos de gestión/almacenamiento de libros traerán cambios desde la sección de Bases de datos, los métodos de cálculo de nóminas vendrán desde Nómimas, mientras que los de fichaje vendrán desde Personal.</p>
 </li>
 </ul>
 </div>
@@ -1139,34 +1197,16 @@ class VideoController extends BaseController
 </div>
 </div>
 <div class="sect1">
-<h2 id="trueprincipio-de-abiertocerrado"><a class="anchor" href="#trueprincipio-de-abiertocerrado"></a>6. Principio de Abierto/Cerrado</h2>
+<h2 id="trueprincipio-de-abiertocerrado-ocp"><a class="anchor" href="#trueprincipio-de-abiertocerrado-ocp"></a>5. Principio de Abierto/Cerrado (OCP)</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>El software debe estar abierto a extensión y cerrado a modificación haciendo uso de interfaces o de clases abstractas.</p>
-</li>
-<li>
-<p>Finalidad</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Facilitar la incorporación de nuevos casos de uso a la aplicación o acciones derivadas.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p><strong>Las clases deben estar abiertas a extensión pero cerradas a modificación</strong>. Realmente debemos entenderlo como que deberíamos poder extender el comportamiento de una clase sin necesidad de modificar la clase.</p>
 </div>
-</li>
-<li>
-<p>Cómo conseguirlo</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Abstraemos a una interfaz lo común y le pedimos las operaciones necesarias (p.e. enviar una notificación, añadir a la lista de novedades, guardar en MinIO, &#8230;&#8203;). La interfaz representa el contrato y ya no se depende de implementaciones concretas, sino de abstracciones</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Esto lo conseguiremos haciendo uso de interfaces o de clases abstractas a las que pedimos las operaciones necesarias (p.e. enviar una notificación, añadir a la lista de novedades, guardar en MinIO, &#8230;&#8203;). La interfaz representa el contrato y ya no se depende de implementaciones concretas, sino de abstracciones</p>
 </div>
-</li>
-</ul>
+<div class="paragraph">
+<p>Un beneficio directo es que se facilita la incorporación de nuevos pasos o acciones derivadas a casos de uso de la aplicación sin necesidad de modificar el código existente.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1176,7 +1216,7 @@ class VideoController extends BaseController
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Cuando queremos añadir algo nuevo derivado de la acción realizada (p.e. añadir un nuevo video) no tenemos que modificar la clase. También lo tenemos presente cuando calculamos el sueldo en función del tipo de empleado y nos enfrentamos a que llega un tipo de empleado nuevo.
+<p>Cuando queremos añadir algo nuevo (p.e. guardar en Google Drive) derivado de la acción realizada (p.e. añadir un nuevo video) no tenemos que modificar la clase. También lo tenemos presente cuando calculamos el sueldo en función del tipo de empleado y nos enfrentamos a que llega un tipo de empleado nuevo.
 Podemos publicar un evento de dominio y añadir nuevos suscriptores para los nuevos casos de uso.</p>
 </div>
 </td>
@@ -1191,16 +1231,191 @@ Podemos publicar un evento de dominio y añadir nuevos suscriptores para los nue
 </div>
 </div>
 </div>
+<div class="paragraph">
+<p>Aquí se muestra una clase que tiene varios costes de envío implementados en la misma clase. Si hay que añadir un nuevo método de envío hay que modificar el código de la clase y nos arriesgamos a romperla.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/OCPOrderAntes.png" alt="OCPOrderAntes">
+</div>
+</div>
+<div class="paragraph">
+<p>Se trata de extraer los métodos en clases separadas (una por cada método de envío) con una interfaz común.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/OCPOrderDespues.png" alt="OCPOrderDespues">
+</div>
+</div>
+<div class="paragraph">
+<p>Tras el cambio, cuando haya que implementar un nuevo método de envío basta con crear una nueva subclase de <code>Shipping</code> sin necesidad de tocar el código de <code>Order</code>. Los pedidos quedarán ligados al nuevo método de envío cuando los usuarios seleccionen el método de envío en la aplicación.</p>
+</div>
+<div class="sect2">
+<h3 id="trueincorporación-de-acciones-derivadas"><a class="anchor" href="#trueincorporación-de-acciones-derivadas"></a>5.1. Incorporación de acciones derivadas</h3>
+<div class="paragraph">
+<p>Tenemos el caso de <code>VideoCreator</code> que inicialmente se dedicaba a guardar un video en bases de datos, pero se necesita también incrementar el número de videos por usuario, añadir notificación, enviar email de conformación, &#8230;&#8203;)</p>
+</div>
+<div class="paragraph">
+<p>Este no es el caso de acoplarnos a una interfaz (p.e. tipo de envío) e ir añadiendo clases específicas después (p.e. para los distintos tipos de envío). Ahora lo que haremos es publicar un evento de dominio y cada una de las acciones derivadas son realmente suscripciones (con sus acciones) asociadas a la publicación del evento de dominio.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trueotro-ejemplo-tribalbyte"><a class="anchor" href="#trueotro-ejemplo-tribalbyte"></a>5.2. Otro ejemplo (Tribalbyte)</h3>
+<div class="paragraph">
+<p>Sacado de</p>
+</div>
+<div class="paragraph">
+<p>Tenemos una clase CalculationService que se encarga de devolvernos el cálculo del área de un polígono, el método getArea recibe como parámetro un objeto de tipo Polygon. Polygon es la clase padre de la que extienden todos los polígonos en nuestra aplicación y tiene una propiedad type que nos diferencia el tipo de polígono que es para realizar un cálculo del área apropiado, en este ejemplo utilizaremos el cuadrado y el círculo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>class CalculationService {
+
+    public void getArea(Polygon p) { <i class="conum" data-value="1"></i><b>(1)</b>
+float result = 0;
+    if (p.type==1){
+        result = areaSquare(p);
+    } else if (p.type==2){
+        result = areaCircle(p);
+}
+return result;
+ }
+
+    public void areaCircle(Circle circle) {
+return Math.PI * Math.pow(circle.getRadius,2);
+}
+
+    public void areaSquare(Square square) {
+    return Math.pow(square.getSide,2);
+}
+ }
+
+ class Polygon { <i class="conum" data-value="2"></i><b>(2)</b>
+    int type;
+ }
+
+ class Square extends Polygon {
+int side;
+
+    public Square(int side) {
+        super.type=1;
+this.side = side;
+}
+
+public int getSide(){
+        return this.side;
+        }
+
+
+}
+
+class Circle extends Polygon {
+int radius;
+
+    public Circle(int radius) {
+        super.type=2;
+this.radius = radius;
+}
+
+public int getRadius(){
+        return this.radius;
+        }
+
+
+}</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Tendremos que modificar ante nuevos tipos de polígonos</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>La raíz del problema</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Si en el código anterior quisiéramos añadir un nuevo tipo de polígono, por ejemplo un triángulo, tendríamos que crear la nueva clase Triangle que extendería de Polygon, y añadir diversos cambios en la clase CalculationService para añadir un nuevo método areaTriangle y modificar getArea para registrar el nuevo tipo de polígono.</p>
+</div>
+<div class="paragraph">
+<p>En este caso sería necesario realizar bastantes modificaciones en CalculationService para poder extender la funcionalidad, estaríamos incumpliendo el principio de abierto-cerrado.</p>
+</div>
+<div class="paragraph">
+<p>La solución:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">class CalculationService {
+    public void getArea(Polygon p) {
+        return p.area();
+    }
+ }
+
+ class Polygon {
+    abstract void area();
+ }
+
+
+class Square extends Polygon {
+int side;
+
+    public Square(int side) {
+this.side = side;
+}
+
+    public void area() {
+        return Math.pow(side,2);
+    }
+}
+
+
+class Circle extends Polygon {
+int radius;
+
+    public Circle(int radius) {
+        this.radius = radius;
+    }
+
+    public void area() {
+        return Math.PI * Math.pow(radius,2);
+    }
+ }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ahora al añadir una nueva clase para triángulos</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">class Triangle extends Polygon {
+int base;
+int height;
+
+    public Triangle(int base, int height) {
+        this.base = base;
+this.height = height;
+}
+
+    public void area() {
+        return base*height/2;
+    }
+ }</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="trueprincipio-de-sustitución-de-liskov"><a class="anchor" href="#trueprincipio-de-sustitución-de-liskov"></a>7. Principio de sustitución de Liskov</h2>
+<h2 id="trueprincipio-de-sustitución-de-liskov-lsp"><a class="anchor" href="#trueprincipio-de-sustitución-de-liskov-lsp"></a>6. Principio de sustitución de Liskov (LSP)</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>El comportamiento de las subclases debe respetar el contrato establecido en la superclase.</p>
+<p><strong>El comportamiento de las subclases debe respetar el contrato establecido en la superclase.</strong> Es decir, se deberían poder pasar objetos de la subclase en lugar de objetos de la superclase sin que quede roto el código del cliente. Los objetos de la sublase deberían ser compatibles con el código que funcionaba con objetos de la superclase.</p>
 </div>
 <div class="paragraph">
-<p>Clase Rectangle:</p>
+<p>Clase <code>Rectangle</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1229,7 +1444,7 @@ Podemos publicar un evento de dominio y añadir nuevos suscriptores para los nue
 </div>
 </div>
 <div class="paragraph">
-<p>Clase Square:</p>
+<p>Clase <code>Square</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1279,16 +1494,498 @@ Podemos publicar un evento de dominio y añadir nuevos suscriptores para los nue
 <div class="content">
 <div class="title">Indicios del violación del LSP</div>
 <div class="paragraph">
-<p><em>Preconditions cannot be strengthened in a subtype</em>. En este caso, en Rectangulo no hay ninguna precondición, length y width pueden tener cualquier valor y no tienen relación entre ellas. Pero cuadrado está añadiendo una "precondición", length y width deben tener siempre el mismo valor.</p>
+<p><em>Preconditions cannot be strengthened in a subtype</em>. En este caso, en Rectangulo no hay ninguna precondición, length y width pueden tener cualquier valor y no tienen relación entre ellas. Pero cuadrado está añadiendo una "precondición", length y width deben tener siempre el mismo valor.
+* Los tipos de los parámetros en un método de la subclase son más concretos que los de ese método en la superclase.
+* El tipo devuelto por un método de la subclase es más genérico que el devuelto por ese método en la superclase (lo contrario que el anterior).
+* Un método de una subclase lanza un tipo de excepción al recibir un objeto de un tipo no deseado, o bien no hacer nada.</p>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="trueejemplo-de-los-pájaros"><a class="anchor" href="#trueejemplo-de-los-pájaros"></a>6.1. Ejemplo de los pájaros</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">public class Bird {
+
+    public String eat(){
+        return food.name;
+    }
+
+    public String tweet(){
+        return tweet.sound;
+    }
+
+    public void fly(){
+        // flying functionality
+    }
+
+}
+...
+public class Sparrow extends Bird {
+
+    @Override
+    public String eat(){
+        return “Insect”;
+    }
+
+    @Override
+    public String tweet(){
+        return “Chirp”;
+    }
+
+}
+...
+public class Penguin extends Bird {
+
+    @Override
+    public String eat(){
+        return “Fish”;
+    }
+
+    @Override
+    public String tweet(){
+        return “Squawk”;
+    }
+
+    @Override
+    public void fly(){
+        throw new Exception(“Penguins can’t fly”); <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Indicio de violación del LSP</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>La solución pasa por crear interfaces para el comportamiento de <code>eat</code>, <code>tweet</code> y <code>fly</code>. Las clases de las aves sólo implementarán las interfaces que tengan sentido.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trueotro-ejemplo"><a class="anchor" href="#trueotro-ejemplo"></a>6.2. Otro ejemplo</h3>
+<div class="paragraph">
+<p>Aquí vemos una subclase en el que el método <code>save</code> no tiene sentido por lo que la subclase trata de resetear el comportamiento base en el método sobrescrito. Si el cliente no comprueba el tipo de documento antes y pasa uno de solo lectura, el código queda roto.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Además, también infringe el OCP porque si se introduce un nuevo tipo de documento hay que cambiar el código para tener soporte para ese cambio.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/LSPDocumentAntes.png" alt="LSPDocumentAntes">
+</div>
+</div>
+<div class="paragraph">
+<p>La solución pasa por modificar la jerarquía de clases y ofrecer el método <code>save</code> en la clase que puede ofrecer esa funcionalidad.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/LSPDocumentDespues.png" alt="LSPDocumentDespues">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="trueprincipio-de-segregación-de-interfaces-isp"><a class="anchor" href="#trueprincipio-de-segregación-de-interfaces-isp"></a>7. Principio de Segregación de Interfaces (ISP)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>No se debería forzar a los clientes a que dependan de métodos que no usan.</strong></p>
+</div>
+<div class="paragraph">
+<p>Huimos de interfaces gruesas o extensas. Se debe tender a crear interfaces lo suficientemente finas de forma que los clientes no tengan que implementar comportamientos que no necesitan.</p>
+</div>
+<div class="paragraph">
+<p>En el ejemplo se ve una interfaz con demasiados métodos, que no son implementados por todos los proveedores cloud. Posiblemente cuando se creó se pensó que todos los proveedores cloud iban a tener el mismo repertorio de funcionalidades.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/ISPCloudProviderAntes.png" alt="ISPCloudProviderAntes">
+</div>
+</div>
+<div class="paragraph">
+<p>La solución pasa por dividir la interfaz en partes de forma que las clases implementen las interfaces que necesiten.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/ISPCloudProviderDespues.png" alt="ISPCloudProviderDespues">
+</div>
+</div>
+<div class="paragraph">
+<p>Este principio, como los demás, debe ser usado con criterio y de forma equilibrada. Si no, podríamos tener interfaces demasiado específicas que complicarían el diseño y el código notablemente.</p>
+</div>
+<div class="paragraph">
+<p>Como consejo, se definirán los contratos de las interfaces basándonos en los clientes que las usan (casos de uso) y no en las implementaciones que se puedan tener. Se trata de lo siguiente.</p>
+</div>
+<div class="paragraph">
+<p>Partimos de la clase <code>UserRepositoryMySql</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="php" class="language-php hljs">final class UserRepositoryMySql extends Repository implements UserRepository
+{
+    public function save(User $user): void
+    {
+        $this-&gt;entityManager()-&gt;persist($user);
+    }
+
+    public function flush(User $user)
+    {
+        $this-&gt;entityManager()-&gt;flush($user);
+    }
+
+    public function saveAll(Users $users)
+    {
+        each($this-&gt;persister(),$users);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Y para evitar acoplarnos a la clase, extraemos sus métodos a una interface</p>
+</div>
+<div class="paragraph">
+<p>Interface <code>UserRepository</code> creada a partir de una implementación:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="php" class="language-php hljs">interface UserRepository
+{
+    public function save(User $user): void;
+
+    public function flush(User $user): void; <i class="conum" data-value="1"></i><b>(1)</b>
+
+    public function saveAll(Users $users): void;
+
+    public function search(UserId $id): ?User;
+
+    public function all(): Users;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Este método no es necesario para otras bases de datos y es muy propio de MySQL.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Contar con el método <code>flush</code> en la interface no es adecuado porque no lo van usar otras clases si usamos otras bases de datos. Por tanto, no debemos dejarnos llevar y crear la intefaces directamente tomando los métodos de las implementaciones. Es más adecuado crear una interface a partir de lo que necesitan sus clientes, en este caso un caso de uso. Así, en la interface necesitaríamos únicamente un método <code>save</code> pudiendo prescindir del método <code>flush</code>.</p>
+</div>
+<div class="paragraph">
+<p>Interface <code>UserRepository</code> creada pensando en sus clientes y no en la implementación. El método <code>flush</code> ya no está presente:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="php" class="language-php hljs">interface UserRepository
+{
+    public function save(User $user): void;
+
+    public function saveAll(Users $users): void;
+
+    public function search(UserId $id): ?User;
+
+    public function all(): Users;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>El método <code>flush</code> ahora pasa a estar <em>oculto</em> en la llamada al método <code>save</code> por parte de la clase MySQL que implementa la interface</p>
+</div>
+<div class="paragraph">
+<p>Clase <code>UserRepositoryMySql</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="php" class="language-php hljs">final class UserRepositoryMySql extends Repository implements UserRepository
+{
+    ...
+    public function save(User $user): void
+    {
+        $this-&gt;entityManager()-&gt;persist($user);
+        $this-&gt;entityManager()-&gt;flush($user); <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+    ...
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>flush</code> ha desaparecido de la interface y ahora está dentro del método <code>save</code>, ya que es una particularidad de MySQL y no es un método necesario para cualqiuer cliente de la interface.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="trueprincipio-de-inversión-de-dependencias-dip"><a class="anchor" href="#trueprincipio-de-inversión-de-dependencias-dip"></a>8. Principio de Inversión de Dependencias (DIP)</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Las clases de alto nivel (negocio) no deberían depender de las clases de bajo nivel (infraestructura -bases de datos, red, &#8230;&#8203;). Ambas deberían depender de abstracciones (p.ej., interfaces).</p>
+</li>
+<li>
+<p>Las abstracciones no deberían depender de los detalles. Los detalles (implementaciones concretas) deben depender de abstracciones.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Un ejemplo típico lo encontramos en el uso directo de bases de datos, lo que puede provocar un problema si cambiamos de base de datos, o algo más fácil, que se produzcan cambios notables en nuevas versiones de la base de datos utilizada. Esto afectaría de forma inesperada a la clase de alto nivel (negocio).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/DIPDatabaseAntes.png" alt="DIPDatabaseAntes">
+</div>
+</div>
+<div class="paragraph">
+<p>La solución pasa por crear una interfaz con las operaciones de bases de datos y hacer que las clases de alto nivel dependan de la interfaz en lugar de la clase concreta. Los cambios se realizan en las clases de bajo nivel que implementan la interfaz. Ahora todo depende de las abstracciones.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/DIPDatabaseDespues.png" alt="DIPDatabaseDespues">
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Para cumplir el DIP:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Inyectaremos dependencias a través del constructor</p>
+</li>
+<li>
+<p>Usamos las interfaces de esas dependencias y no implementaciones concretas</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="trueotro-ejemplo-tribalbyte-2"><a class="anchor" href="#trueotro-ejemplo-tribalbyte-2"></a>8.1. Otro ejemplo (Tribalbyte)</h3>
+<div class="paragraph">
+<p>Sacado de <a href="https://tech.tribalyte.eu/blog-principios-solid-dependency" class="bare">https://tech.tribalyte.eu/blog-principios-solid-dependency</a></p>
+</div>
+<div class="paragraph">
+<p>Veamos otro ejemplo con código. Supongamos que tenemos un software que procesa una serie de documentos almacenados en una base de datos y les aplica una firma. El código estaría formado por tres clases, una que contiene el acceso a la base de datos, otra con los algoritmos necesarios para generar la firma y una tercera clase con la lógica de negocio que implementa y utiliza instancias de las anteriores clases.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">public class MongoDatabase {
+    public Document getDocument(int id){
+        // Access to DB and returns the document with the corresponding ID
+    }
+}
+
+public class MySignature {
+    public void signMD5withRSA(Document doc){
+        // Algorithm to sign document
+    }
+}
+
+public class ProcessDocument {
+    public void signDocument(int id) {
+
+        MongoDatabase mongoDatabase = new MongoDatabase();
+        Document doc = mongoDatabase.getDocument(id);
+
+        MySignature signature = new MySignature();
+        signature.signMD5withRSA(doc);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>En este caso la clase de más alto nivel, que procesa los documentos, está dependiendo de módulos de bajo nivel, como son el acceso a base de datos y el proceso de firma de documentos. Si en un futuro nuestro requerimientos del software cambian y nos vemos obligados a modificar el algoritmo de firma o utilizar otro cliente de base de datos, es muy probable que las modificaciones afecten a la clase ProcessDocument.</p>
+</div>
+<div class="paragraph">
+<p>Si aplicamos el principio de inversión de dependencias, deberíamos sustituir en nuestra clase ProcessDocument las dependencias a implementaciones concretas por abstracciones. Para ello crearemos dos interfaces que definen los comportamiento que debe tener una clase para acceder a la base de datos o para realizar una firma. Ahora la implementación concreta es recibida en el constructor de ProcessDocument. El código resultante sería el siguiente.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">public interface IDatabase {
+    Document getDocument(int id);
+}
+
+public class MongoDatabase implements IDatabase {
+
+    @Override
+    public Document getDocument(int id){
+        // Get document from mongo DB
+    }
+}
+
+public interface ISignature {
+    void sign(Document doc);
+}
+
+public class MySignature implements ISignature {
+
+    @Override
+    public void sign(Document doc){
+        // Signature logic
+    }
+}
+
+public class ProcessDocument {
+    private final IDatabase database;
+    private final ISignature signature;
+
+    public ProcessDocument(IDatabase database, ISignature signature) {
+        this.database = database;
+        this.signature = signature;
+    }
+
+    public void signDocument(int id) {
+        Document doc = this.database.getDocument(id);
+        this.signature.sign(doc);
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="truespecification-pattern-o-criteria"><a class="anchor" href="#truespecification-pattern-o-criteria"></a>9. Specification Pattern o Criteria</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>querer filtrar el contenido por los distintos campos que tiene nuestra tabla, ordenar por cada uno de estos y paginarlos.
+Esta necesidad podría implicar que tuvieramos que implementar bien un montón de métodos con las distintas casuísticas, o bien un método mastodóntico con todos los parámetros posibles en dichas casuísticas.</p>
+</div>
+<div class="paragraph">
+<p>Clase Criteria:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="php" class="language-php hljs">final class Criteria
+{
+    private $filters;
+    private $order;
+    private $offset;
+    private $limit;
+    public function __construct(Filters $filters, ?Order $order, ?int $offset, ?int $limit)
+    {
+        $this-&gt;filters = $filters;
+        $this-&gt;order   = $order;
+        $this-&gt;offset  = $offset;
+        $this-&gt;limit   = $limit;
+    }
+    // ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>La solución a través de este patrón nos propone tener una clase Criteria en nuestro dominio compuesta por tres partes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Filters (campos de nuestro backoffice)</p>
+</li>
+<li>
+<p>Order (opt)</p>
+</li>
+<li>
+<p>Pagination (opt)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Clase Filter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="php" class="language-php hljs">final class Filter
+{
+    private $field;
+    private $operator;
+    private $value;
+    public function __construct(FilterField $field, FilterOperator $operator, FilterValue $value)
+    {
+        $this-&gt;field    = $field;
+        $this-&gt;operator = $operator;
+        $this-&gt;value    = $value;
+    }
+    // ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Cada uno de nuestros Filter está compuesto por un campo, un operador a utilizar y el valor que va a filtrarse</p>
+</div>
+<div class="paragraph">
+<p>Clase Order:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="php" class="language-php hljs">final class Order
+{
+    private $orderBy;
+    private $orderType;
+    public function __construct(OrderBy $orderBy, OrderType $orderType)
+    {
+        $this-&gt;orderBy   = $orderBy;
+        $this-&gt;orderType = $orderType ?: OrderType::asc();
+    }
+    // ....</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A nivel de ordenación, vemos cómo en nuestro Order estamos definiendo y pasando como argumento en el constructor el tipo de campo y tipo de orden por el que se realizará la búsqueda.</p>
+</div>
+<div class="paragraph">
+<p>La paginación de la búsqueda se compondría de los argumentos $offset y $limit que veíamos en el constructor de nuestra clase Criteria.</p>
+</div>
+<div class="paragraph">
+<p>Interface VideoRepository:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="php" class="language-php hljs">interface VideoRepository
+{
+    public function save(Video $video): void;
+    public function search(VideoId $id): ?Video;
+    public function searchByCriteria(Criteria $criteria): Videos;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>De este forma, nuestro VideoRepository sólo necesita llamar a searchByCriteria, que recibirá como argumento un objeto Criteria, para cualquier filtro que queramos aplicar en nuestra búsqueda. Serán las distintas implementaciones de nuestro repositorio las encargadas de convertir este Criteria en una consulta preparada para su BD.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-08-09 19:25:53 +0200
+Last updated 2021-10-11 10:08:23 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
